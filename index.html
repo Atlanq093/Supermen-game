@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>superemen</title>
+      <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   <div id="game-container">
+   <div id="background"></div>
+        <div id="obstacles-container"></div>
+        <div id="bonuses-container"></div>
+        <img src="/images/R.png" alt="Superman" class="supermen" id="supermen-1">
+         <div id="info-bar">
+            <div id="timer">Czas: 0s</div>
+            <div id="score">Punkty: 0</div>
+            <div id="tries">Próby: 0</div>
+        </div>
+
+        <div id="message">Naciśnij Enter aby zacząć | ArrowUp aby lecieć</div>
+        
+       <div id="game-over" class="hidden">
+            <h2>Game Over!</h2>
+            <p id="final-score">Wynik: 0</p>
+            <button id="restart-btn">Zagraj ponownie</button>
+        </div>
+    </div>
+   </div>
+<script src="game.js"></script> 
+</body>
+</html>
