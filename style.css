@@ -1,0 +1,16 @@
+:root{
+    --info_bar:  hsl(214, 84%, 15%) ;
+    --timer: hsl(0, 90%, 55%); 
+    --tries: hsl(49, 85%, 60%) ;
+    --font:  hsl(214, 21%, 77%) ;
+    --game_over-font: hsl(213, 29%, 52%);
+    --background_gameover:hsl(240, 50%, 1%);
+     --button: hsl(210, 80%, 55%);
+
+
+     --game-width: 800px;
+    --game-height: 500px;
+    --superman-size: 60px;
+    --obstacle-width: 80px;
+    --gap-between: 200px
+}
