@@ -14,3 +14,61 @@
     --obstacle-width: 80px;
     --gap-between: 200px
 }
+
+*{
+    margin: 0;
+    padding: 0;
+
+}
+#game-container {
+    width: var(--game-width);
+    height: var(--game-height);
+    border: 2px solid rgb(0, 0, 0);
+    border-radius: 20px;
+    position: relative; 
+    overflow: hidden;    
+}
+#background{
+    width: 100%;
+    height: 100%;
+    background-image: url("images/retro-pixel-art-cityscape-with-skyscrapers-buildings-urban-vintage-nostalgia-skyline-architecture-8-bit-downtown-digital-drawing-metropolis-generated-by-ai_727385-9228.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;  /* ← żeby nie przesuwało innych elementów */
+    top: 0;
+    left: 0;
+}
+ #timer{
+
+ }
+
+
+ #score{
+
+ }
+
+
+ #tries{
+
+ }
+
+ #message{
+
+ }
+
+
+ #game-over{
+
+
+ }
+
+
+ #final-score{
+
+ }
+
+
+ #restart-btn{
+    
+ }
