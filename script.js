@@ -15,12 +15,14 @@ const images= [
      "images/2.png",
       "images/3.png",
        "images/4.png",
-        "images/5.png",
-         "images/6.png",
-          "images/7.png",
+        
           
 ];
-
+const backgrounds = [
+    "images/5.png",
+    "images/6.png",
+    "images/7.png",
+];
 
 //Zmienne
 let triesCount = 0;
@@ -74,6 +76,8 @@ function startTimer() {
 
 function endGame() {
    clearInterval(timerInterval);
+    clearInterval(obstacleInterval); // ← dodaj to
+    obstacleInterval = null; 
     gameRunning = false;
     superman.classList.add('hidden');
     gameOver.classList.remove('hidden');
@@ -105,7 +109,7 @@ function gameLoop() {
         return;
     }
    moveObstacles();
-   
+   checkCollisions();
     requestAnimationFrame(gameLoop);
 }
 
@@ -123,47 +127,54 @@ function moveObstacles() {
     });
 }
 //budynki 
-   function createObstacle() {
+ function createObstacle() {
     const gapTop = Math.floor(Math.random() * 200) + 80;
     const gapBottom = gapTop + 150;
     const losowy = Math.floor(Math.random() * 4) + 1;
 
-    // górny budynek
     const top = document.createElement('img');
     top.src = `images/${losowy}.png`;
     top.classList.add('obstacle', 'obstacle-top');
+    top.style.width = '80px';
+    top.style.top = '0px';              // ← góra kontenera = dół HUD
     top.style.height = gapTop + 'px';
-    top.style.top = '0';
     top.style.left = '500px';
     top.style.transform = "rotate(180deg)";
 
-    // dolny budynek
     const bottom = document.createElement('img');
     bottom.src = `images/${losowy}.png`;
     bottom.classList.add('obstacle', 'obstacle-bottom');
-    bottom.style.height = (500 - gapBottom) + 'px';
+    bottom.style.width = '80px';
     bottom.style.top = gapBottom + 'px';
+    bottom.style.height = `calc(100% - ${gapBottom}px)`;
     bottom.style.left = '500px';
 
     obstaclesContainer.appendChild(top);
     obstaclesContainer.appendChild(bottom);
 }
-
-function checkCollision(player, obstacle) {
-    const playerRect = player.getBoundingClientRect();
-    const obstacleRect = obstacle.getBoundingClientRect();
-
-    return !(
-        playerRect.top > obstacleRect.bottom ||
-        playerRect.bottom < obstacleRect.top ||
-        playerRect.left > obstacleRect.right ||
-        playerRect.right < obstacleRect.left
-    );
+function checkCollisions() {
+    const supermanRect = superman.getBoundingClientRect();
+    const obstacles = document.querySelectorAll('.obstacle');
+    
+    obstacles.forEach(obs => {
+        const obsRect = obs.getBoundingClientRect();
+        
+        if (
+            supermanRect.left < obsRect.right &&
+            supermanRect.right > obsRect.left &&
+            supermanRect.top < obsRect.bottom &&
+            supermanRect.bottom > obsRect.top
+        ) {
+            endGame();
+        }
+    });
 }
 function resetObstacles() {
-    const obstacles = document.querySelectorAll('.obstacle');
-    obstacles.forEach(obstacle => obstacle.remove());
+    obstaclesContainer.innerHTML = '';
+    clearInterval(obstacleInterval);
+    obstacleInterval = null;
 }
+
 
 restartBtn.addEventListener('click', () => {
     message.classList.remove('hidden')
@@ -172,3 +183,5 @@ restartBtn.addEventListener('click', () => {
     superman.classList.add('hidden')
         resetObstacles();
 })
+
+
