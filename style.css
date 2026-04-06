@@ -153,3 +153,7 @@ body{
 #game-over.hidden {
     display: none ;
 }
+
+.hidden {
+    display: none;
+}
