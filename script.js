@@ -31,7 +31,8 @@ let supermanY = 220;      // startowa pozycja
 let velocityY = 0;        // prędkość
 const gravity = 0.5;      // siła grawitacji
 const jumpForce = -8; 
-
+let obstacleInterval = null;
+let gameRunning = false;
  //Button 
 
 startBtn.addEventListener('click', () => {
@@ -53,6 +54,11 @@ function gameStart() {
          score.innerHTML='Punkty:0;'
         timer.innerHTML='Czas:0;'
          superman.classList.remove('hidden');
+         obstaclesContainer.innerHTML = '';
+    
+    obstacleInterval = setInterval(() => {
+        if (gameRunning) createObstacle();
+    }, 1000);
          startTimer();
     requestAnimationFrame(gameLoop);
 
@@ -88,16 +94,81 @@ document.addEventListener('keydown', (e) => {
 function gameLoop() {
     if (!gameRunning) return;
 
-    // fizyka
+ 
     velocityY += gravity;
     supermanY += velocityY;
     superman.style.top = supermanY + 'px';
 
-    // granice ekranu
+   
     if (supermanY <= 0 || supermanY >= 440) {
         endGame();
         return;
     }
-
+   moveObstacles();
+   
     requestAnimationFrame(gameLoop);
 }
+
+function moveObstacles() {
+    const obstacles = document.querySelectorAll('.obstacle');
+    obstacles.forEach(obs => {
+        const currentLeft = parseInt(obs.style.left);
+        obs.style.left = (currentLeft - 3) + 'px';
+
+        if (currentLeft < -100) {
+            obs.remove();
+            scoreCount++;
+            score.innerHTML = `Punkty: ${scoreCount}`;
+        }
+    });
+}
+//budynki 
+   function createObstacle() {
+    const gapTop = Math.floor(Math.random() * 200) + 80;
+    const gapBottom = gapTop + 150;
+    const losowy = Math.floor(Math.random() * 4) + 1;
+
+    // górny budynek
+    const top = document.createElement('img');
+    top.src = `images/${losowy}.png`;
+    top.classList.add('obstacle', 'obstacle-top');
+    top.style.height = gapTop + 'px';
+    top.style.top = '0';
+    top.style.left = '500px';
+    top.style.transform = "rotate(180deg)";
+
+    // dolny budynek
+    const bottom = document.createElement('img');
+    bottom.src = `images/${losowy}.png`;
+    bottom.classList.add('obstacle', 'obstacle-bottom');
+    bottom.style.height = (500 - gapBottom) + 'px';
+    bottom.style.top = gapBottom + 'px';
+    bottom.style.left = '500px';
+
+    obstaclesContainer.appendChild(top);
+    obstaclesContainer.appendChild(bottom);
+}
+
+function checkCollision(player, obstacle) {
+    const playerRect = player.getBoundingClientRect();
+    const obstacleRect = obstacle.getBoundingClientRect();
+
+    return !(
+        playerRect.top > obstacleRect.bottom ||
+        playerRect.bottom < obstacleRect.top ||
+        playerRect.left > obstacleRect.right ||
+        playerRect.right < obstacleRect.left
+    );
+}
+function resetObstacles() {
+    const obstacles = document.querySelectorAll('.obstacle');
+    obstacles.forEach(obstacle => obstacle.remove());
+}
+
+restartBtn.addEventListener('click', () => {
+    message.classList.remove('hidden')
+    startBtn.classList.remove('hidden')
+    gameOver.classList.add('hidden')
+    superman.classList.add('hidden')
+        resetObstacles();
+})
